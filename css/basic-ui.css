@@ -457,3 +457,22 @@ dialog[open].menu-container::backdrop {
         background-color: var(--inverse-surface);
     }
 }
+
+
+
+span.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    /* animation: ripple 6000ms linear; */
+    animation: ripple var(--ripple-duration) linear;
+    /* background-color: color-mix(in srgb, contrast-color(var(--button-bg-color)) 70%, transparent); */
+    background-color: color-mix(in srgb, contrast-color(var(--primary)) 70%, transparent);
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
