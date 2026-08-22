@@ -86,16 +86,16 @@ function addRippleAndClickDelayed(event, button) {
 
 
     const rippleDuration = getRootCssVarMs("--ripple-duration");
-    console.log({ rippleDuration });
-    // if (Number.isNaN(rippleDuration)) { throw Error("Did not get --ripple-timeout"); }
+    // console.log({ rippleDuration });
+
     // circle.addEventListener("animationend", () => { whenRippleFinishes(); });
-    /* Much easier to use timeout.  And more flexible.  */
+    //// Much easier to use timeout.  And more flexible.
     setTimeout(whenRippleFinishes, rippleDuration * 0.5);
 
 
 
     function whenRippleFinishes() {
-        console.log("whenRippleFinishes", { rippleDuration });
+        // console.log("whenRippleFinishes", { rippleDuration });
         circle.remove();
         const delayedClick = new MouseEvent("click", {
             bubbles: true,
@@ -420,7 +420,7 @@ class SnackbarQueue {
 
         this.isDisplaying = true;
         const { message, duration } = this.queue.shift();
-        console.log("processQueue: snackbar duration", duration);
+        // console.log("processQueue: snackbar duration", duration);
 
         // Set text directly on the popover container
         this.snackbarPopover = getEltSnackbar();
