@@ -172,6 +172,10 @@ export function mkIconButton(icon, title) {
 
 
 // Modify your dialog opening function to include this viewport verification check:
+/**
+ * @param {HTMLElement} bdy 
+ * @throws {TypeError}
+ */
 function openModalAndEnsureKeyboard(bdy) {
     const dlg = document.createElement("dialog");
     dlg.appendChild(bdy);
@@ -200,7 +204,7 @@ function openModalAndEnsureKeyboard(bdy) {
             );
             if (!(textInput instanceof HTMLElement)) {
                 debugger;
-                throw Error("textInput is not HTMLElement");
+                throw TypeError("textInput is not HTMLElement");
             }
 
             if (textInput) {
@@ -229,21 +233,21 @@ export async function showDialog(bdy, valFun, buttons, dialogClass) {
     if (valFun != undefined) {
         if (typeof valFun !== 'function') {
             debugger;
-            throw new Error('Parameter "valFun" must be a function');
+            throw TypeError('Parameter "valFun" must be a function');
         }
         if (valFun.constructor.name !== 'AsyncFunction') {
             debugger;
-            throw new Error('Function "valFun" must be async');
+            throw TypeError('Function "valFun" must be async');
         }
         if (valFun.length !== 0) {
             debugger;
-            throw new Error('Async function "valFun" must take 0 parameters');
+            throw RangeError('Async function "valFun" must take 0 parameters');
         }
     }
     if (typeof bdy == "string") { bdy = mkElt("div", undefined, bdy); }
     if (!(bdy instanceof HTMLDivElement)) {
         debugger;
-        throw Error("bdy is not <div>");
+        throw TypeError("bdy is not <div>");
     }
     // bdy.classList.add("modal-scroll-body");
     const dlg = mkElt("dialog", undefined, bdy);
@@ -257,7 +261,7 @@ export async function showDialog(bdy, valFun, buttons, dialogClass) {
         myButtons.forEach(b => {
             if (!(b instanceof HTMLButtonElement)) {
                 debugger;
-                throw Error("showDialog: buttons must only contain <button>");
+                throw TypeError("showDialog: buttons must only contain <button>");
             }
             eltButtons.appendChild(b);
         });
@@ -271,7 +275,7 @@ export async function showDialog(bdy, valFun, buttons, dialogClass) {
     );
     if (textInput && !(textInput instanceof HTMLElement)) {
         debugger;
-        throw Error("textInput is not HTMLElement");
+        throw TypeError("textInput is not HTMLElement");
     }
 
     if (textInput) {
@@ -310,6 +314,7 @@ export async function showDialog(bdy, valFun, buttons, dialogClass) {
  * @param {HTMLDivElement} bdy 
  * @param {string} [ok]
  * @param {string} [cancel]
+ * @throws {TypeError}
  * @category Visual helpers
  */
 export async function showDialogConfirm(bdy, ok, cancel, funOkButton) {
@@ -341,19 +346,19 @@ export async function showDialogConfirm(bdy, ok, cancel, funOkButton) {
         const msg = `showDialogConfirm: typeof ans == "${tofAns}`;
         console.error(msg);
         debugger;
-        throw Error(msg);
+        throw TypeError(msg);
     }
     return ans;
 }
 /**
  * @param {HTMLElement} elt 
- * @throws
+ * @throws {ReferenceError}
  * @category Visual helpers
  */
 export function closeMyDialog(elt) {
     const dlg = elt.closest("dialog");
     if (!dlg) {
-        throw Error("No closest dialog");
+        throw ReferenceError("No closest dialog");
     }
     dlg.close();
 }
@@ -361,15 +366,17 @@ export function closeMyDialog(elt) {
 /**
  * Resolves after the browser completes its next layout and paint cycle.
  *
- * @param {function} fun 
- * @returns {Promise<undefined>}
+ * @param {function} fun - The callback function
+ * @returns {Promise<void>}
+ * @throws {TypeError}
+ * @throws {RangeError}
  * @category Helpers
  */
 export function nextPaint(fun) {
     const tofFun = typeof fun;
-    if (tofFun != "function") throw Error(`nextPaint, typeof fun == "${tofFun}"`);
+    if (tofFun != "function") throw TypeError(`nextPaint, typeof fun == "${tofFun}"`);
     const lenFun = fun.length;
-    if (lenFun != 0) throw Error(`nextPaint, fun.length == "${lenFun}"`);
+    if (lenFun != 0) throw RangeError(`nextPaint, fun.length == "${lenFun}"`);
 
     return new Promise((resolve) => {
         requestAnimationFrame(() => {
@@ -390,13 +397,16 @@ export function nextPaint(fun) {
 // Snackbars
 /////////////
 
-/** @returns {HTMLDivElement} */
+/**
+ * @returns {HTMLDivElement}
+ * @throws {ReferenceError}
+ */
 function getEltSnackbar() {
     let elt = document.getElementById("snackbar");
     if (!elt) {
         // Native popover element configured manually so it doesn't light-dismiss
         elt = mkElt("div", { id: "snackbar", popover: "manual" });
-        if (elt == null) { throw Error("elt == null"); }
+        if (elt == null) { throw ReferenceError("elt == null"); }
         elt.addEventListener("click", evt => {
             evt.stopPropagation();
             toast.clearQueue();
@@ -879,30 +889,32 @@ export function addMenuDivider(dialogMenu) {
  * @param {HTMLDialogElement} dialogMenu 
  * @param {string} txt 
  * @param {function():void} fun 
+ * @throws {TypeError}
+ * @throws {RangeError}
  * @category Visual elements
  */
 export function addMenuAlt(dialogMenu, txt, fun) {
     if (!(dialogMenu instanceof HTMLDialogElement)) {
-        throw Error("dialogMenu is not <dialog>");
+        throw TypeError("dialogMenu is not <dialog>");
     }
     if (!(dialogMenu.classList.contains("menu-container"))) {
-        throw Error("!dialogMenu.menu-container");
+        throw TypeError("!dialogMenu.menu-container");
     }
     const tofTxt = typeof txt;
     if (tofTxt != "string") {
         if (!(txt instanceof HTMLSpanElement)) {
             // throw Error(`typeof txt: "${tofTxt} != "string`);
-            throw Error(`Must be string or <span>`);
+            throw TypeError(`Must be string or <span>`);
         }
     }
     if (fun) {
         const tofFun = typeof fun;
         if (tofFun != "function") {
             debugger;
-            throw Error(`typeof fun: "${tofFun} != "function`);
+            throw TypeError(`typeof fun: "${tofFun} != "function`);
         }
         if (fun.length > 0) {
-            throw Error(`function fun should take 0 parameter: ${fun.length}`);
+            throw RangeError(`function fun should take 0 parameter: ${fun.length}`);
         }
     }
 
@@ -931,6 +943,8 @@ export function addMenuAlt(dialogMenu, txt, fun) {
 /**
  * @param {HTMLDialogElement} dialogMenu
  * @param {Object} objDialogPosition
+ * @throws {TypeError}
+ * @throws {RangeError}
  * @category Visual helpers
  */
 export function displayMenu(dialogMenu, objDialogPosition) {
@@ -941,7 +955,7 @@ export function displayMenu(dialogMenu, objDialogPosition) {
     } = objDialogPosition;
     if (Object.keys(rest).length > 0) {
         const unknownKeys = Object.keys(rest).join(", ");
-        throw new Error(
+        throw TypeError(
             `Invalid options passed to displayMenu: ${unknownKeys}. ` +
             `Only allowed: parent, relativeX`
         );
@@ -959,7 +973,7 @@ export function displayMenu(dialogMenu, objDialogPosition) {
             dialogMenu.style.left = `${bcrParent.left}px`;
             break;
         default:
-            throw Error(`Bad relativeX == "${relativeX}"`);
+            throw RangeError(`Bad relativeX == "${relativeX}"`);
     }
 
     document.body.appendChild(dialogMenu);
@@ -1100,15 +1114,16 @@ function monitorVisualViewport() {
 /**
  * @param {HTMLDialogElement} dlg
  * @param {number} msTimeout
- * @throws
+ * @throws {ReferenceError}
+ * @throws {TypeError}
  */
 function scrollForTextInput(dlg, msTimeout = 300) {
-    if (!(dlg instanceof HTMLDialogElement)) throw Error("not dialog elment");
+    if (!(dlg instanceof HTMLDialogElement)) throw TypeError("not dialog elment");
     // if (!dlg.classList.contains("has-text-input")) return;
     setTimeout(() => {
         console.log("using textInput");
         const eltScroll = dlg.querySelector("div.scroll-for-text-input");
-        if (!eltScroll) throw Error("!eltScroll");
+        if (!eltScroll) throw ReferenceError("!eltScroll");
         if (!(eltScroll instanceof HTMLDivElement)) throw Error("eltScroll is not div");
         syncViewport();
         eltScroll.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1167,13 +1182,13 @@ monitorVisualViewport();
 /**
  * @param {string} cssVar -- 500ms, 0.5s
  * @returns {number}
- * @throws
+ * @throws {SyntaxError}
  * @category Helpers
  */
 export function getRootCssVarMs(cssVar) {
     if (!cssVar.startsWith("--")) {
         debugger;
-        throw Error(`${cssVar} is not a css variable name`);
+        throw SyntaxError(`${cssVar} is not a css variable name`);
     }
     let strCssVar =
         window.getComputedStyle(document.documentElement)
@@ -1181,23 +1196,23 @@ export function getRootCssVarMs(cssVar) {
             .trim();
     if (strCssVar.length == 0) {
         debugger;
-        throw Error(`${cssVar} not set on :root`);
+        throw SyntaxError(`${cssVar} not set on :root`);
     }
     const isSec = strCssVar.endsWith("s");
     const isMs = strCssVar.endsWith("ms");
     if (!isSec) {
         debugger;
-        throw Error(`${cssVar} does not end with ms or s`);
+        throw SyntaxError(`${cssVar} does not end with ms or s`);
     }
     strCssVar = strCssVar.slice(0, -1);
     if (isMs) { strCssVar = strCssVar.slice(0, -1); }
     if (strCssVar.endsWith(" ")) {
         debugger;
-        throw Error(`${cssVar} space before ms`);
+        throw SyntaxError(`${cssVar} space before ms`);
     }
     if (Number.isNaN(Number(strCssVar))) {
         debugger;
-        throw Error(`${cssVar} does not have a number`);
+        throw SyntaxError(`${cssVar} does not have a number`);
     }
     let ms = parseFloat(strCssVar);
     if (!isMs) { ms = 1000 * ms; }
@@ -1270,12 +1285,13 @@ export function colorNameToHex(colorName) {
  * @param {string} baseInput - Seed color hex code or standard CSS color name.
  * @param {boolean} [isDark=false] - Optional flag to generate dark mode tokens.
  * @returns {Record<string, string>} Object containing CSS custom properties.
+ * @throws {TypeError}
  */
 function generateMaterialPalette(baseInput, isDark = false) {
     // Convert color name or raw hex string to normalized 6-digit hex
     let hex = baseInput.startsWith("#") ? baseInput : colorNameToHex(baseInput);
     if (!hex) {
-        throw new Error(`Invalid color format or name: "${baseInput}"`);
+        throw TypeError(`Invalid color format or name: "${baseInput}"`);
     }
 
     hex = hex.replace("#", "");
