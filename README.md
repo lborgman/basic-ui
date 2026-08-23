@@ -1,17 +1,25 @@
 # basic-ui
 Simple JavaScript and CSS inspired by Google's Material Design.
 
-I am planning to implement some more functions. If there is something you think would be in a library like this, then please till me!
+**<span style="color:red">Not quite ready!</span> I recommend to use the links below now instead of copying the files.** This is how I currently use basic-UI in [Clean Link](https://lborgman.github.io/text-and-link/).
 
-**To test you can use these links:**
+    <script src="https://lborgman.github.io/basic-ui/js/basic-ui.js" 
+      type="module"></script>
 
-    <script src="https://lborgman.github.io/basic-ui/js/basic-ui.js" type="module"></script>
+    const modBasicUI =
+      await import("https://lborgman.github.io/basic-ui/js/basic-ui.js");
+
     <!-- Asynchronous non-blocking CSS load -->
-    <link href="https://lborgman.github.io/basic-ui/css/basic-ui.css" rel="stylesheet" media="print"
+    <link href="https://lborgman.github.io/basic-ui/css/basic-ui.css" 
+        rel="stylesheet" media="print"
         onload="this.media='all'" />
 
 
+*I am planning to implement some more functions. If there is something you think would be in a library like this, then please till me!*
+
 -----
+Below are the currently exported JavaScript functions.
+(The table is created with [jsdoc to markdown for web](https://lborgman.github.io/jsdoc2md-web/jsdoc2md-7.html).)
 
 ## Table of Contents
 
