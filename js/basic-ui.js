@@ -11,6 +11,7 @@ const mkElt = window["mkElt"];
 /**
  * @param {function} [funClose]
  * @returns {HTMLButtonElement}
+ * @category Visual elements
  */
 export function mkXclose(funClose) {
     const xClose = mkElt("button", { class: "x-close" }, "✖");
@@ -25,6 +26,12 @@ export function mkXclose(funClose) {
     });
     return xClose;
 }
+/**
+ * 
+ * @param {HTMLDialogElement} dialog 
+ * @returns {HTMLButtonElement}
+ * @category Visual elements
+ */
 export function addXclose(dialog) {
     const btnClose = dialog.querySelector("button[class=x-close]");
     if (btnClose) { return; }
@@ -136,6 +143,7 @@ function closeDialog(dialog) {
  * @param {string} title 
  * @param {boolean} small 
  * @returns {HTMLButtonElement}
+ * @category Visual elements
  */
 export function mkFabButton(icon, title, small) {
     const btn = mkElt("button", undefined, icon);
@@ -152,6 +160,7 @@ export function mkFabButton(icon, title, small) {
  * @param {any} icon 
  * @param {string} title 
  * @returns {HTMLButtonElement}
+ * @category Visual elements
  */
 export function mkIconButton(icon, title) {
     const btn = mkElt("button", undefined, icon);
@@ -214,6 +223,7 @@ function openModalAndEnsureKeyboard(bdy) {
  * @param {undefined|HTMLButtonElement[]} [buttons]
  * @param {string} [dialogClass]
  * @returns {Promise<any>}
+ * @category Visual helpers
  */
 export async function showDialog(bdy, valFun, buttons, dialogClass) {
     if (valFun != undefined) {
@@ -300,6 +310,7 @@ export async function showDialog(bdy, valFun, buttons, dialogClass) {
  * @param {HTMLDivElement} bdy 
  * @param {string} [ok]
  * @param {string} [cancel]
+ * @category Visual helpers
  */
 export async function showDialogConfirm(bdy, ok, cancel, funOkButton) {
     bdy.classList.add("no-x-close-button"); // Remove the upper right X close button
@@ -334,16 +345,25 @@ export async function showDialogConfirm(bdy, ok, cancel, funOkButton) {
     }
     return ans;
 }
+/**
+ * @param {HTMLElement} elt 
+ * @throws
+ * @category Visual helpers
+ */
 export function closeMyDialog(elt) {
     const dlg = elt.closest("dialog");
+    if (!dlg) {
+        throw Error("No closest dialog");
+    }
     dlg.close();
 }
 
 /**
  * Resolves after the browser completes its next layout and paint cycle.
- * 
+ *
  * @param {function} fun 
- * @returns 
+ * @returns {Promise<undefined>}
+ * @category Helpers
  */
 export function nextPaint(fun) {
     const tofFun = typeof fun;
@@ -488,6 +508,7 @@ const toast = new SnackbarQueue();
  * @param {string|HTMLDivElement} message
  * @param {number} duration
  *
+ * @category Visual elements
  * @example
  *   snackbar('Microphone enabled');
  */
@@ -778,6 +799,7 @@ customElements.define('mdc-input', MdcInput);
  * @param {string} variableName 
  * @param {string} className 
  * @returns {boolean}
+ * @category Helpers
  */
 export function isCssVariableDefined(variableName, className) {
     // Ensure the variable name starts with '--'
@@ -825,6 +847,7 @@ const isDefined = window.getComputedStyle(document.documentElement)
 
 /**
  * @returns {HTMLDialogElement}
+ * @category Visual elements
  */
 export function mkDialogMenu() {
     const eltDialogMenuContainer = mkElt("dialog", { class: "menu-container" });
@@ -837,6 +860,10 @@ export function mkDialogMenu() {
     return eltDialogMenuContainer;
 }
 
+/**
+ * @param {HTMLDialogElement} dialogMenu 
+ * @category Visual elements
+ */
 export function addMenuDivider(dialogMenu) {
     const divider = mkElt("div");
     divider.style = `
@@ -852,6 +879,7 @@ export function addMenuDivider(dialogMenu) {
  * @param {HTMLDialogElement} dialogMenu 
  * @param {string} txt 
  * @param {function():void} fun 
+ * @category Visual elements
  */
 export function addMenuAlt(dialogMenu, txt, fun) {
     if (!(dialogMenu instanceof HTMLDialogElement)) {
@@ -903,6 +931,7 @@ export function addMenuAlt(dialogMenu, txt, fun) {
 /**
  * @param {HTMLDialogElement} dialogMenu
  * @param {Object} objDialogPosition
+ * @category Visual helpers
  */
 export function displayMenu(dialogMenu, objDialogPosition) {
     const {
@@ -1091,6 +1120,7 @@ function scrollForTextInput(dlg, msTimeout = 300) {
 * Waits for a list of elements to settle their layouts.
 * @param {HTMLElement|HTMLElement[]|NodeList} elements - Single element or list of elements.
 * @returns {Promise<WeakMap<HTMLElement, ResizeObserverEntry>>} Resolves with a WeakMap mapping elements to their final entries.
+ * @category Helpers
 */
 export function waitForLayoutSilence(elements) {
     return new Promise((resolve) => {
@@ -1138,6 +1168,7 @@ monitorVisualViewport();
  * @param {string} cssVar -- 500ms, 0.5s
  * @returns {number}
  * @throws
+ * @category Helpers
  */
 export function getRootCssVarMs(cssVar) {
     if (!cssVar.startsWith("--")) {
@@ -1184,6 +1215,7 @@ export function getRootCssVarMs(cssVar) {
  * Converts any valid CSS color string (name, rgb, hsl) to a hex string.
  * @param {string} colorName - e.g., "orange", "deepskyblue", "papayawhip"
  * @returns {string|null} Hex color string (e.g., "#f97316") or null if invalid
+ * @category Helpers
  */
 export function colorNameToHex(colorName) {
     // Create an in-memory 1x1 canvas context
@@ -1362,6 +1394,7 @@ function generateMaterialPalette(baseInput, isDark = false) {
  * @param {string} baseColor - Color hex or name (e.g. "#4f46e5" or "indigo")
  * @param {boolean} [isDark=false] - Set to true for dark mode tokens
  * @param {HTMLElement} [targetElement=document.documentElement] - Optional target container element
+ * @category Visual helpers
  */
 export function applyMaterialTheme(baseColor, isDark = false, targetElement = document.documentElement) {
     const palette = generateMaterialPalette(baseColor, isDark);
