@@ -1291,7 +1291,7 @@ export function colorNameToHex(colorName) {
  * @returns {Record<string, string>} Object containing CSS custom properties.
  * @throws {TypeError}
  */
-function generateMaterialPalette(baseInput, isDark = false) {
+export function generateMaterialPalette(baseInput, isDark = false) {
     // Convert color name or raw hex string to normalized 6-digit hex
     let hex = baseInput.startsWith("#") ? baseInput : colorNameToHex(baseInput);
     if (!hex) {
