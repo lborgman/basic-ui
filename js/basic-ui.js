@@ -1295,4 +1295,4 @@ export function colorNameToHex(colorName) {
 // Example Usage:
 // applyMaterialTheme("#f97316"); // Generates and applies the Orange theme
 // applyMaterialTheme("#00ff00");
-applyMaterialTheme("yellow", true);
+// applyMaterialTheme("yellow", true);
