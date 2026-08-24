@@ -286,6 +286,7 @@ dialog:has(div.no-x-close-button) {
     background-color: transparent;
 }
 
+/*
 .OLDicon-button {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
@@ -296,6 +297,7 @@ dialog:has(div.no-x-close-button) {
     border: none;
     font-size: 24px;
 }
+*/
 
 /*****************/
 /** Icon buttons */
@@ -559,4 +561,11 @@ span.ripple {
         transform: scale(4);
         opacity: 0;
     }
+}
+
+
+input[type=color] {
+    background: transparent;
+    width: 40px;
+    height: 40px;
 }
