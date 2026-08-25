@@ -27,7 +27,7 @@
          *  @param {HTMLElement} [targetElement]
          */
         applyTheme: function (colorTheme, targetElement = document.documentElement) {
-            console.log("Applying color theme:", colorTheme);
+            // console.log("Applying color theme:", colorTheme);
             Object.entries(colorTheme).forEach(([prop, value]) => {
                 targetElement.style.setProperty(prop, value);
             });
