@@ -182,14 +182,14 @@
 
 
     /**
- * Generates a full Material Design 3 color palette with variant support.
- *
- * @param {string} baseInput - Seed color hex code or standard CSS color name.
- * @param {boolean} [isDark=false] - Optional flag to generate dark mode tokens.
- * @param {'tonalSpot'|'vibrant'|'expressive'|'fidelity'|'content'|'fruitSalad'|'rainbow'|'monochrome'} [variant='tonalSpot'] - M3 Scheme Variant.
- * @returns {Record<string, string>} Object containing CSS custom properties.
- * @throws {TypeError}
- */
+     * Generates a full Material Design 3 color palette with variant support.
+     *
+     * @param {string} baseInput - Seed color hex code or standard CSS color name.
+     * @param {boolean} [isDark=false] - Optional flag to generate dark mode tokens.
+     * @param {'tonalSpot'|'vibrant'|'expressive'|'fidelity'|'content'|'fruitSalad'|'rainbow'|'monochrome'} [variant='tonalSpot'] - M3 Scheme Variant.
+     * @returns {Record<string, string>} Object containing CSS custom properties.
+     * @throws {TypeError}
+     */
     function generateMaterial3ThemePalette(baseInput, isDark = false, variant = 'tonalSpot') {
         // Convert color name or raw hex string to normalized 6-digit hex
         let hex = baseInput.startsWith("#") ? baseInput : colorNameToHex(baseInput);
@@ -403,4 +403,58 @@
             "--link-hover": "hsl(212deg 100% 25%)"
         };
     }
+
+    /**
+     * Converts any valid CSS color string (name, rgb, hsl) to a hex string.
+     * @param {string} colorName - e.g., "orange", "deepskyblue", "papayawhip"
+     * @returns {string|null} Hex color string (e.g., "#f97316") or null if invalid
+     * @category Helpers
+     */
+    function colorNameToHex(colorName) {
+        // Create an in-memory 1x1 canvas context
+        const ctx = document.createElement("canvas").getContext("2d");
+        if (!ctx) return null;
+
+        // ctx.fillStyle = colorName;
+        // const computed = ctx.fillStyle;
+
+
+
+        // 1. Set to a baseline color
+        ctx.fillStyle = "#000000";
+        ctx.fillStyle = colorName;
+
+        // If assigning colorName failed and it didn't compute to black, it's invalid
+        const computedFirst = ctx.fillStyle;
+
+        // 2. Double-check against a second baseline to verify actual black input vs fallback
+        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = colorName;
+        const computedSecond = ctx.fillStyle;
+
+        // If the fillStyle didn't change with colorName, the input string is invalid
+        if (computedFirst !== computedSecond) {
+            return null;
+        }
+
+        const computed = computedFirst;
+
+
+
+
+        // Browser resolves valid colors to hex "#rrggbb" or "rgba(...)"
+        if (computed.startsWith("#")) {
+            return computed;
+        }
+
+        // Handle rgb(r, g, b) return values from canvas
+        const rgbMatch = computed.match(/\d+/g);
+        if (rgbMatch && rgbMatch.length >= 3) {
+            const [r, g, b] = rgbMatch.map(Number);
+            return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+        }
+
+        return null;
+    }
+
 })();

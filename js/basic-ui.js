@@ -1236,6 +1236,7 @@ export function getRootCssVarMs(cssVar) {
  * @returns {string|null} Hex color string (e.g., "#f97316") or null if invalid
  * @category Helpers
  */
+// FIX-ME: This is also in basic-ui-color-themes
 export function colorNameToHex(colorName) {
     // Create an in-memory 1x1 canvas context
     const ctx = document.createElement("canvas").getContext("2d");
