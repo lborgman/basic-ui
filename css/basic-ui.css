@@ -18,7 +18,7 @@
         font-family: inherit;
     }
 
-    --ripple-duration: 1s;
+    --basicUI_ripple-duration: 1s;
 
     --icon-button-size: 48;
     --checkbox-border-color: #8b8c89;
@@ -550,13 +550,12 @@ span.ripple {
     position: absolute;
     border-radius: 50%;
     transform: scale(0);
-    /* animation: ripple 6000ms linear; */
-    animation: ripple var(--ripple-duration) linear;
+    animation: basicUI_ripple var(--basicUI_ripple-duration) linear;
     /* background-color: color-mix(in srgb, contrast-color(var(--button-bg-color)) 70%, transparent); */
     background-color: color-mix(in srgb, contrast-color(var(--primary)) 70%, transparent);
 }
 
-@keyframes ripple {
+@keyframes basicUI_ripple {
     to {
         transform: scale(4);
         opacity: 0;

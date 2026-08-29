@@ -96,17 +96,15 @@ function addRippleAndClickDelayed(event, button) {
 
 
 
-    const rippleDuration = getRootCssVarMs("--ripple-duration");
-    // console.log({ rippleDuration });
+    const basicUI_rippleDuration = getRootCssVarMs("--basicUI_ripple-duration");
 
     // circle.addEventListener("animationend", () => { whenRippleFinishes(); });
     //// Much easier to use timeout.  And more flexible.
-    setTimeout(whenRippleFinishes, rippleDuration * 0.5);
+    setTimeout(whenRippleFinishes, basicUI_rippleDuration * 0.5);
 
 
 
     function whenRippleFinishes() {
-        // console.log("whenRippleFinishes", { rippleDuration });
         circle.remove();
         const delayedClick = new MouseEvent("click", {
             bubbles: true,
@@ -773,7 +771,7 @@ class MdcInput extends HTMLElement {
           color: rgba(0, 0, 0, 0.6);
         }
 
-        /* Enable bottom ripple accent bar on focus (Filled layout only) */
+        /* Enable bottombasicUI_ripple accent bar on focus (Filled layout only) */
         .mdc-text-field:has(.mdc-text-field__input:focus) .mdc-line-ripple {
           transform: scaleX(1);
         }
