@@ -546,7 +546,7 @@ dialog[open].menu-container::backdrop {
 
 
 
-span.ripple {
+span.basicUI_ripple {
     position: absolute;
     border-radius: 50%;
     transform: scale(0);

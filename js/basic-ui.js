@@ -78,11 +78,10 @@ document.documentElement.addEventListener("click",
     }, { capture: true });
 
 function addRippleAndClickDelayed(event, button) {
-    const currentRipple = button.getElementsByClassName("ripple")[0];
+    const currentRipple = button.getElementsByClassName("basicUI_ripple")[0];
     if (currentRipple) { return; }
 
     const circle = document.createElement("span");
-    // const diameter = Math.max(button.clientWidth, button.clientHeight);
     const bcrButton = button.getBoundingClientRect();
     const diameter = Math.max(bcrButton.width, bcrButton.height); // FIX-ME: ??
     const radius = diameter / 2;
@@ -92,7 +91,7 @@ function addRippleAndClickDelayed(event, button) {
     circle.style.left = `${event.clientX - bcrButton.left - radius}px`;
     // circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
     circle.style.top = `${event.clientY - bcrButton.top - radius}px`;
-    circle.classList.add("ripple");
+    circle.classList.add("basicUI_ripple");
 
 
 
